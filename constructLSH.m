@@ -23,7 +23,7 @@ numImages = numel(trainingSet.Files);
 % - their original image ID into the ref vector
 for i = 1 : numImages
     I = im2gray(readimage(trainingSet,i));
-    I = imresize(I, [256 256]); % can try without this
+%     I = imresize(I, [256 256]); % can try without this
     sift = detectSIFTFeatures(I).selectStrongest(25);
     [features, ~] = extractFeatures(I, sift);
     featureSet = cat(2, featureSet, features.');
