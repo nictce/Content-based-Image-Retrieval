@@ -1,15 +1,14 @@
-function [ranks] = searchLSH(input_file, featureSet, ref)
+function [ranks] = searchLSH(input_file, featureSet, ref, lshStruct)
 
+cd('vLSH')
 K = 32;   % # of nearest neighbors to search for each query
 T = 10;   % # of additional probing bins
 
 % query an input image
 I = imread(input_file);
 I = imresize(im2gray(I), [256 256]); % can try removing this
-figure, imshow(I); hold on;
 sift = detectSIFTFeatures(I).selectStrongest(25);
 [queryFeatures, valid_points] = extractFeatures(I, sift);
-plot(valid_points,'showOrientation',true);
 
 [idsMULTIPROBE, cand_sizeMULTIPROBE, ~] = lshSearch(queryFeatures.', featureSet, lshStruct, K, T);
 
@@ -43,5 +42,6 @@ end
 
 ranks = sortrows([weights uniqImageIds], 1, 'descend');
 
+cd("..\")
 end
 

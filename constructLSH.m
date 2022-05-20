@@ -1,6 +1,6 @@
 function [lshStruct, featureSet, ref, trainingSet, testingSet] = constructLSH()
 
-cd('C:\Users\PC\Desktop\3081\Content-based-Image-Retrieval')
+% cd('C:\Users\PC\Desktop\3081\Content-based-Image-Retrieval')
 
 %CIFAR100
 % rootFolder = 'cifar-100-matlab\CIFAR-100\TEST';
@@ -43,5 +43,6 @@ W = 1000; % bucket width
 % Construct index tables
 lshStruct = lshConstruct(featureSet, L, M, W);
 
+cd("..\")
 end
 
