@@ -5,12 +5,12 @@ K = 32;   % # of nearest neighbors to search for each query
 T = 10;   % # of additional probing bins
 
 % query an input image
-I = imread(input_file);
-I = imresize(im2gray(I), [256 256]); % can try removing this
+I = im2gray(imread(input_file));
+% I = imresize(I, [256 256]); % can try using this
 sift = detectSIFTFeatures(I).selectStrongest(25);
-[queryFeatures, valid_points] = extractFeatures(I, sift);
+[queryFeatures, ~] = extractFeatures(I, sift);
 
-[idsMULTIPROBE, cand_sizeMULTIPROBE, ~] = lshSearch(queryFeatures.', featureSet, lshStruct, K, T);
+[idsMULTIPROBE, ~, ~] = lshSearch(queryFeatures.', featureSet, lshStruct, K, T);
 
 
 % convert the feature IDs into their original image IDs
@@ -27,10 +27,10 @@ end
 uniqImageIds = unique(oriImages);
 N = numel(uniqImageIds);
 weights = zeros(N,1);
-fib = zeros(1, K); fib(K-1) = 1;
-for i = K-2:-1:1
-   fib(i) = fib(i+1)+fib(i+2);
-end
+% fib = zeros(1, K); fib(K-1) = 1;
+% for i = K-2:-1:1
+%    fib(i) = fib(i+1)+fib(i+2);
+% end
 
 for k = 1 : N
     weights(k) = sum(sum(oriImages == uniqImageIds(k))); % unranked weighting of NNs
