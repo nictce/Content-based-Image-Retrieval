@@ -1,5 +1,7 @@
 function [lshStruct, featureSet, ref, trainingSet, testingSet] = constructLSH()
 
+% select the dataset for training here
+
 %CIFAR10
 rootFolder = 'cifar10Train';
 categories = {'airplane','automobile','bird','cat','deer','dog','frog','horse','ship','truck'};
@@ -12,6 +14,7 @@ categories = {'airplane','automobile','bird','cat','deer','dog','frog','horse','
 % rootFolder = 'CorelDB';
 % categories = {'art_dino', 'bld_sculpt', 'obj_aviation', 'obj_car', 'obj_door', 'obj_moleculr', 'pet_cat', 'sc_', 'sc_iceburg', 'sc_rural', 'texture_1', 'texture_6', 'wl_eagle', 'wl_horse', 'wl_owls', 'wl_wolf', 'art_mural', 'eat_drinks', 'obj_balloon', 'obj_cards', 'obj_eastregg', 'obj_orbits', 'pet_dog', 'sc_autumn', 'sc_indoor', 'sc_sunset', 'texture_2', 'wl_buttrfly', 'wl_elephant', 'wl_lepoad', 'wl_porp', 'woman', 'art_1', 'bld_castle', 'eat_feasts', 'obj_bob', 'obj_decoys', 'obj_flags', 'obj_ship', 'pl_flower', 'sc_cloud', 'sc_mountain', 'sc_waterfal', 'texture_3', 'wl_cat', 'wl_fish', 'wl_lion', 'wl_primates', 'art_antiques', 'bld_lighthse', 'fitness', 'obj_bonsai', 'obj_dish', 'obj_mask', 'obj_steameng', 'pl_foliage', 'sc_firewrk', 'sc_night', 'sc_waves', 'texture_4', 'wl_cougr', 'wl_fox', 'wl_lizard', 'wl_roho', 'art_cybr', 'bld_modern', 'obj_234000', 'obj_bus', 'obj_doll', 'obj_mineral', 'obj_train', 'pl_mashroom', 'sc_forests', 'sc_rockform', 'sp_ski', 'texture_5', 'wl_deer', 'wl_goat', 'wl_nests', 'wl_tiger'};
 
+% reading the dataset images into an ImageDataStore
 imds = imageDatastore(fullfile(rootFolder, categories), 'LabelSource', 'foldernames');
 imagesPerClass = 100;
 [trainingSet, testingSet] = splitEachLabel(imds, imagesPerClass, 'randomize'); 
@@ -34,16 +37,15 @@ for i = 1 : numImages
 end
 
 
-% construct LSH hash tables for featureSet
 cd('vLSH')
 
-% Tune hyperparameters
+% tune table construction hyperparameters
 % Q = 144;  % # of queries
 L = 10;   % # of tables
 M = 25;   % # of dimensions at projection space
 W = 1000; % bucket width
 
-% Construct index tables
+% construct LSH tables for featureSet
 lshStruct = lshConstruct(featureSet, L, M, W);
 
 cd("..\")
