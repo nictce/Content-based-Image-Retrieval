@@ -1,7 +1,5 @@
 function [ranks] = searchLSH(input_file, featureSet, ref, lshStruct)
 
-cd('vLSH')
-
 % tune table searching hyperparameters 
 K = 32;   % # of nearest neighbors to search for each query
 T = 10;   % # of additional probing bins
@@ -13,6 +11,8 @@ I = im2gray(imread(input_file));
 sift = detectSIFTFeatures(I).selectStrongest(25);
 [queryFeatures, ~] = extractFeatures(I, sift);
 
+
+cd('vLSH')
 
 % query each of the SIFT features of the image to search for the nearest K
 % features matching it in the hashtables (in lshStruct)
